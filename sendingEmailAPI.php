@@ -102,17 +102,25 @@
     
     // Usage example
     $mailer = new SendGridMailer();
+    $cc = $bcc = $replyTo = null;
     $from = [
-        'email' => $_POST['from_mail'], //'springy@branddomain.com',
-        'name' => $_POST['from_name'] //'Every Thing example@branddomain.com',
+        'email' => $_POST['from_mail'],//'springy@egittoturismo.com',
+        'name' => $_POST['from_name']//'Every Thing example@egittoturismo.com',
     ];
     $to = [
         [
-            'email' => $_POST['to_email'], //'your-email@example.com',
+            'email' => $_POST['to_email'],//'ahmed@deemalab.com',
             'name' => $_POST['to_name'],
         ],
     ];
-    $subject = $_POST['subject']; // "Mail Subject"
+    if(isset($_POST['reply_to']) && !empty($_POST['reply_to']))
+    {
+        $replyTo = [
+            'email' => $_POST['reply_to'],//'ahmed@deemalab.com',
+            'name' => $_POST['reply_to_name'],
+        ];
+    }
+    $subject = $_POST['subject'];// "Mail Subject"
     $content = [
         [
             'type' => 'text/html',
@@ -125,4 +133,4 @@
         $attachments[] = $mailer->addAttachmentFromUpload($_FILES['files']);
     }
  
-    $mailer->sendEmail($from, $to, $subject, $content, $attachments);    
+    $mailer->sendEmail($from, $to, $subject, $content, $attachments, $cc, $bcc, $replyTo);   
